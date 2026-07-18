@@ -1,7 +1,7 @@
 
 
-
-# Quiz Backend Management using FastAPI
+```markdown
+# Quiz Backend Management using FASTAPI
 
 A RESTful backend application built with **FastAPI** that allows users to create, manage, and retrieve quiz questions and answer choices. It provides full CRUD operations for quiz management while maintaining relationships between questions and their corresponding choices using a relational database.
 
@@ -9,7 +9,7 @@ This project demonstrates modern backend development practices, including API de
 
 ---
 
-##  Features
+## Features
 * **Create, Read, Update, and Delete (CRUD) operations** for quiz questions.
 * **CRUD operations** for answer choices.
 * **One-to-Many relationship** between questions and choices (with database-level Cascade Delete).
@@ -17,6 +17,9 @@ This project demonstrates modern backend development practices, including API de
 * **Database operations** using SQLAlchemy ORM.
 * **JWT Authentication**: Secure login session token generation and verification using `python-jose` and `bcrypt` password hashing.
 * **Role-Based Access Control (RBAC)**: Enforced permissions separating `admin` users (write access) from `student` users (read-only access).
+* **Interactive Frontend Dashboard**: Premium glassmorphic Single Page Application (SPA) web client served directly by FastAPI.
+* **Interactive API documentation** with Swagger UI.
+
 ---
 
 ## Tech Stack
@@ -31,6 +34,7 @@ This project demonstrates modern backend development practices, including API de
 ---
 
 ## Project Structure
+```text
 quiz-backend-api/
 │── app/
 │   │── routers/          # API route definitions (auth, questions, choices)
@@ -48,13 +52,13 @@ quiz-backend-api/
 
 ---
 
-## Prerequisites
+##Prerequisites
 * Python 3.10+
 * pip
 
 ---
 
-## API Endpoints
+##API Endpoints
 
 ###Authentication
 | Method | Endpoint | Description |
@@ -82,7 +86,7 @@ quiz-backend-api/
 
 ---
 
-## Learning Outcomes
+##Learning Outcomes
 This project helped in understanding:
 * REST API development with FastAPI.
 * Secure session management using JWT Authentication and hashed passwords.
