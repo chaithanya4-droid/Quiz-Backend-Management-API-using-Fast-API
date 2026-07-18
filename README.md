@@ -1,7 +1,7 @@
 
 
 ```markdown
-# Quiz Backend Management API with Interactive Dashboard
+# Quiz Backend Management using FastAPI
 
 A RESTful backend application built with **FastAPI** that allows users to create, manage, and retrieve quiz questions and answer choices. It provides full CRUD operations for quiz management while maintaining relationships between questions and their corresponding choices using a relational database.
 
@@ -31,7 +31,6 @@ This project demonstrates modern backend development practices, including API de
 ---
 
 ## Project Structure
-```text
 quiz-backend-api/
 │── app/
 │   │── routers/          # API route definitions (auth, questions, choices)
