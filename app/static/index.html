@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizSpark - Interactive Quiz & Admin Platform</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for premium icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    <div class="glow-bg-secondary"></div>
+
+    <!-- Notification system toast -->
+    <div id="toast" class="toast hidden"></div>
+
+    <header class="app-header hidden" id="appHeader">
+        <div class="header-container">
+            <div class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>QuizSpark</span>
+            </div>
+            <div class="user-profile">
+                <span id="headerUserInfo" class="user-info">
+                    <span class="user-avatar" id="avatarLetter">S</span>
+                    <span class="user-name" id="usernameDisplay">Student</span>
+                    <span class="badge" id="roleBadge">Student</span>
+                </span>
+                <button id="logoutBtn" class="btn btn-outline btn-sm">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <!-- AUTH SECTION -->
+        <section id="authSection" class="auth-section">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <h1>Welcome to QuizSpark</h1>
+                    <p>Enter your credentials to access the platform</p>
+                </div>
+                
+                <!-- Login form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginUsername">Username</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-user"></i>
+                            <input type="text" id="loginUsername" required placeholder="Enter username">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="loginPassword" required placeholder="Enter password">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        Login <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <p class="auth-toggle">
+                        Don't have an account? <a href="#" id="showRegister">Register here</a>
+                    </p>
+                </form>
+
+                <!-- Register form (hidden initially) -->
+                <form id="registerForm" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="registerUsername">Username</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-user"></i>
+                            <input type="text" id="registerUsername" required placeholder="Choose a username">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="registerPassword" required placeholder="Create a password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Account Type (Role)</label>
+                        <div class="role-selector">
+                            <label class="role-option">
+                                <input type="radio" name="registerRole" value="student" checked>
+                                <span class="role-box">
+                                    <i class="fa-solid fa-book-reader"></i>
+                                    <span>Student</span>
+                                </span>
+                            </label>
+                            <label class="role-option">
+                                <input type="radio" name="registerRole" value="admin">
+                                <span class="role-box">
+                                    <i class="fa-solid fa-user-shield"></i>
+                                    <span>Admin</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        Register Account <i class="fa-solid fa-user-plus"></i>
+                    </button>
+                    <p class="auth-toggle">
+                        Already have an account? <a href="#" id="showLogin">Login here</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <!-- STUDENT DASHBOARD -->
+        <section id="studentDashboard" class="dashboard-section hidden">
+            <div class="dashboard-container">
+                <div class="dashboard-header-block">
+                    <h1>Ready for a Challenge?</h1>
+                    <p>Select a category below to test your knowledge. Complete quizzes to improve your skills.</p>
+                </div>
+
+                <div class="categories-grid" id="categoriesGrid">
+                    <!-- Dynamic categories card list -->
+                    <div class="loading-spinner">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i> Loading categories...
+                    </div>
+                </div>
+
+                <!-- Active Quiz Attempt Card (Hidden initially) -->
+                <div id="quizContainer" class="quiz-container-card hidden">
+                    <div class="quiz-progress-bar">
+                        <div class="progress-fill" id="quizProgressFill" style="width: 0%;"></div>
+                    </div>
+                    <div class="quiz-card-header">
+                        <span class="quiz-category-tag" id="quizCategoryTag">Category</span>
+                        <span class="quiz-question-counter" id="quizQuestionCounter">Question 1 of 5</span>
+                    </div>
+                    <div class="quiz-card-body">
+                        <h2 class="quiz-question-text" id="quizQuestionText">Loading Question...</h2>
+                        <div class="quiz-choices-list" id="quizChoicesList">
+                            <!-- Dynamic choices options -->
+                        </div>
+                    </div>
+                    <div class="quiz-card-footer">
+                        <button id="nextQuestionBtn" class="btn btn-primary" disabled>
+                            Next <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quiz Results Overlay (Hidden initially) -->
+                <div id="quizResultsCard" class="quiz-results-card hidden">
+                    <div class="results-trophy">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <h2>Quiz Completed!</h2>
+                    <p class="results-score-text">You scored <span id="correctAnswersCount">0</span> out of <span id="totalQuestionsCount">0</span></p>
+                    <div class="results-progress-circle">
+                        <svg viewBox="0 0 36 36" class="circular-chart">
+                            <path class="circle-bg"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                            />
+                            <path class="circle"
+                                id="resultsPercentageCircle"
+                                stroke-dasharray="0, 100"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                            />
+                            <text x="18" y="20.35" class="percentage" id="resultsPercentageText">0%</text>
+                        </svg>
+                    </div>
+                    <div class="results-actions">
+                        <button id="restartQuizBtn" class="btn btn-primary">
+                            <i class="fa-solid fa-rotate-left"></i> Retake Quiz
+                        </button>
+                        <button id="backToDashBtn" class="btn btn-secondary">
+                            <i class="fa-solid fa-house"></i> Dashboard
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN DASHBOARD -->
+        <section id="adminDashboard" class="dashboard-section hidden">
+            <div class="dashboard-container">
+                <div class="admin-top-bar">
+                    <div>
+                        <h1>API Management Console</h1>
+                        <p>Perform CRUD operations on questions and answer choices.</p>
+                    </div>
+                    <button class="btn btn-primary" id="openAddQuestionModalBtn">
+                        <i class="fa-solid fa-plus"></i> Add New Question
+                    </button>
+                </div>
+
+                <!-- Admin Analytics Metrics -->
+                <div class="analytics-row">
+                    <div class="analytic-card">
+                        <div class="analytic-icon icon-blue">
+                            <i class="fa-regular fa-comments"></i>
+                        </div>
+                        <div class="analytic-data">
+                            <h3 id="statTotalQuestions">0</h3>
+                            <p>Total Questions</p>
+                        </div>
+                    </div>
+                    <div class="analytic-card">
+                        <div class="analytic-icon icon-purple">
+                            <i class="fa-solid fa-tags"></i>
+                        </div>
+                        <div class="analytic-data">
+                            <h3 id="statTotalCategories">0</h3>
+                            <p>Total Domains</p>
+                        </div>
+                    </div>
+                    <div class="analytic-card">
+                        <div class="analytic-icon icon-green">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <div class="analytic-data">
+                            <h3 id="statTotalChoices">0</h3>
+                            <p>Answer Choices</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Questions List Table -->
+                <div class="table-card">
+                    <div class="table-card-header">
+                        <h2>Questions Directory</h2>
+                        <div class="filter-controls">
+                            <select id="adminCategoryFilter" class="form-control select-sm">
+                                <option value="">All Categories</option>
+                                <!-- Categories dynamically loaded -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="questions-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Question Text</th>
+                                    <th>Domain / Category</th>
+                                    <th>Options Count</th>
+                                    <th class="actions-th">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="questionsTableBody">
+                                <!-- Dynamic rows -->
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 2.5rem;">
+                                        <div class="loading-spinner">
+                                            <i class="fa-solid fa-circle-notch fa-spin"></i> Loading directory...
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL FOR CREATING AND EDITING QUESTIONS -->
+    <div class="modal-overlay hidden" id="questionModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Quiz Question</h2>
+                <button class="modal-close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="questionForm">
+                <input type="hidden" id="modalQuestionId">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="modalQuestionText">Question Text</label>
+                        <textarea id="modalQuestionText" required rows="3" placeholder="Enter the question text here..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalQuestionCategory">Category / Domain</label>
+                        <input type="text" id="modalQuestionCategory" required placeholder="e.g. Data Science, Python, General Knowledge">
+                    </div>
+                    
+                    <div class="choices-section">
+                        <div class="choices-header">
+                            <h3>Answer Choices</h3>
+                            <p>Provide choices and mark the correct one (at least one correct required)</p>
+                        </div>
+                        <div class="modal-choices-list" id="modalChoicesList">
+                            <!-- Dynamically added choice inputs -->
+                        </div>
+                        <button type="button" class="btn btn-outline btn-sm btn-full" id="addChoiceFieldBtn">
+                            <i class="fa-solid fa-plus"></i> Add Answer Option
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelModalBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveQuestionBtn">Save Question</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Javascript -->
+    <script src="js/app.js"></script>
+</body>
+</html>
